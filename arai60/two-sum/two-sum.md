@@ -3,6 +3,7 @@
 - step1: 5分考えて分からなかったら答えを見る。答えを理解したら、答えを隠して書く。筆が進まず 5 分立ったら答えを見て、全て消して書き直す。ゴールは答えを送信して正解するまで。
 - step2: コードを読みやすくするようにできるだけ整える。動くコードになったら OK。
 - step3: 時間を計りながら書く。10分以内に3回連続でアクセプトされるまで。
+- step4: レビューのフィードバックを反映したコードを書く。
 
 # step1
 
@@ -101,6 +102,30 @@ public:
 
       if (map.contains(want))
         return {i, map[want]};
+
+      map[nums[i]] = i;
+    }
+
+    throw runtime_error("No two sum solution found!");
+  }
+};
+```
+
+# step4
+
+- レビューのフィードバックを反映したコードを載せます。
+
+```cpp
+class Solution {
+public:
+  vector<int> twoSum(const vector<int> &nums, int target) {
+    unordered_map<int, int> map;
+
+    for (int i = 0; i < nums.size(); i++) {
+      int complement = target - nums[i];
+
+      if (map.contains(complement))
+        return {i, map[complement]};
 
       map[nums[i]] = i;
     }
