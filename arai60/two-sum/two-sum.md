@@ -119,18 +119,37 @@ public:
 class Solution {
 public:
   vector<int> twoSum(const vector<int> &nums, int target) {
-    unordered_map<int, int> map;
+    unordered_map<int, int> value_to_index_map;
 
     for (int i = 0; i < nums.size(); i++) {
       int complement = target - nums[i];
 
-      if (map.contains(complement))
-        return {i, map[complement]};
+      if (value_to_index_map.contains(complement))
+        return {i, value_to_index_map[complement]};
 
-      map[nums[i]] = i;
+      value_to_index_map[nums[i]] = i;
     }
 
     throw runtime_error("No two sum solution found!");
+  }
+};
+```
+
+- 2 重ループのケースにおいて、`for (int j = 0; j < i; j++)` とすることで、同じ値のケースと重複したケースをスキップできる。
+
+```cpp
+class Solution {
+public:
+  vector<int> twoSum(vector<int> &nums, int target) {
+    for (int i = 0; i < nums.size(); i++) {
+      for (int j = 0; j < i; j++) {
+        if (nums[i] + nums[j] == target) {
+            return {i, j};
+        }
+      }
+    }
+
+    throw runtime_error("No two sum solution found");
   }
 };
 ```
