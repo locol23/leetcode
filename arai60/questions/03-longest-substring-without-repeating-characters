@@ -1,0 +1,112 @@
+# 取り組み方
+
+- step1: 5分考えて分からなかったら答えを見る。答えを理解したら、答えを隠して書く。筆が進まず 5 分立ったら答えを見て、全て消して書き直す。ゴールは答えを送信して正解するまで。
+- step2: コードを読みやすくするようにできるだけ整える。動くコードになったら OK。
+- step3: 時間を計りながら書く。10分以内に3回連続でアクセプトされるまで。
+- step4: レビューのフィードバックを反映したコードを書く。
+
+# step1
+
+- 現在のインデックスを一文字ずつずらして重複する文字が出現するまで次の文字を調べる方法を思いついたがもっと良い方法があると感じたため、AI と壁打ちし、Sliding Windowという考え方を学んだ。
+
+```cpp
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        vector<int> last_position(128, -1);
+
+        int left = 0;
+        int max_length = 0;
+
+        for (int right = 0; right < s.length(); right++) {
+            unsigned char character = s[right];
+
+            if (last_position[character] >= left) {
+                left = last_position[character] + 1;
+            }
+
+            last_position[character] = right;
+            max_length = max(max_length, right - left + 1);
+         }
+
+         return max_length;
+    }
+};
+```
+
+# step2
+
+- AI と壁打ちし、いくつか改善点を得た。
+  - 変数 length を定義することで毎回 s.length() 実行をしなくてよくなるのと、int型にキャストすることでrightと型が一致する
+  - std:: をつけることでどこの vector なのかを明示化できる
+  - max() を毎回実行するよりも純粋な if での比較の方が少しだけ高速化できる
+
+```cpp
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+      std::vector<int> last_position(128, -1);
+      int left = 0;
+      int max_length = 0;
+      int length = s.length();
+
+      for (int right = 0; right < length; right++) {
+        unsigned char character = s[right];
+
+        if (left <= last_position[character]) {
+          left = last_position[character] + 1;
+        }
+
+        last_position[character] = right;
+
+        int current_length = right - left + 1;
+        if (max_length < current_length) {
+          max_length = current_length;
+        }
+      }
+
+      return max_length;
+    }
+};
+```
+
+# step3
+
+- 3 回目のコードを載せます。
+
+```cpp
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+      std::vector<int> last_position(128, -1);
+      int left = 0;
+      int max_length = 0;
+      int length = s.length();
+
+      for (int right = 0; right < length; right++) {
+        unsigned char character = s[right];
+
+        if (left <= last_position[character]) {
+          left = last_position[character] + 1;
+        }
+
+        last_position[character] = right;
+
+        int current_length = right - left + 1;
+        if (max_length < current_length) {
+          max_length = current_length;
+        }
+      }
+
+      return max_length;
+    }
+};
+```
+
+# step4
+
+- レビューのフィードバックを反映したコードを載せます。
+
+```cpp
+
+```
